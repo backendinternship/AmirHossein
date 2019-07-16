@@ -1,4 +1,4 @@
-package rssWriter;
+package rssSaver;
 
 import constants.Constants;
 

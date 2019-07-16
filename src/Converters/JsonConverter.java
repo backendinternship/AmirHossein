@@ -2,7 +2,7 @@ package Converters;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import rssWriter.WebsiteNewses;
+import rssSaver.WebsiteNewses;
 
 import java.io.*;
 

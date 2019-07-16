@@ -1,7 +1,7 @@
 import Converters.JsonConverter;
 import constants.Constants;
-import rssWriter.News;
-import rssWriter.WebsiteNewses;
+import rssSaver.News;
+import rssSaver.WebsiteNewses;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -14,14 +14,18 @@ public class UI {
     public static void main(String[] args) {
 
         newses = Objects.requireNonNull(JsonConverter.readRSSFromJson(Constants.DIGITAL_TRENDS_JSON.get())).getNewses();
-        if (newses == null) System.err.println("Reading RSS from json didn't successfully");
+        if (newses == null) {
+            System.err.println("Reading RSS from json didn't successfully");
+            return;
+        }
 
         while(true) {
             String identify = new Scanner(System.in).nextLine().trim();
             if (identify.equals("finish")) break;
             News news = findNews(identify);
 
-            if (news == null) System.err.println("This news isn't exist");
+            if (news == null)
+                System.err.println("This news isn't exist");
             else {
                 news.incrementView();
                 System.out.println("Identify:‌ " + news.getIdentify());

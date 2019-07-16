@@ -1,4 +1,4 @@
-package rssWriter;
+package rssSaver;
 
 public class News {
 
