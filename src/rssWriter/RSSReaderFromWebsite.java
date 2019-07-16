@@ -19,7 +19,7 @@ public class RSSReaderFromWebsite {
     private boolean isReadFinished = false;
 
 
-    public static RSSReaderFromWebsite getInstance() {
+    static RSSReaderFromWebsite getInstance() {
         if (instance == null) instance = new RSSReaderFromWebsite();
         return instance;
     }
@@ -27,7 +27,7 @@ public class RSSReaderFromWebsite {
     private RSSReaderFromWebsite() {
     }
 
-    public ArrayList<News> getRSS(String urlAddress) {
+    ArrayList<News> getRSS(String urlAddress) {
 
         ArrayList<News> newses = null;
         try {

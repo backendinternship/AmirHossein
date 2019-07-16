@@ -2,7 +2,7 @@ package rssWriter;
 
 import java.util.ArrayList;
 
-public class WebsiteRSS {
+public class WebsiteNewses {
 
     private ArrayList<News> newses;
 
@@ -10,7 +10,7 @@ public class WebsiteRSS {
         return newses;
     }
 
-    public WebsiteRSS(ArrayList<News> newses) {
+    public WebsiteNewses(ArrayList<News> newses) {
         this.newses = newses;
     }
 }
