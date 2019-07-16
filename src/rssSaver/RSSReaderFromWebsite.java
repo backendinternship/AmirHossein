@@ -2,6 +2,9 @@ package rssSaver;
 
 import constants.Constants;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,14 +12,7 @@ import java.util.ArrayList;
 public class RSSReaderFromWebsite {
 
     private static RSSReaderFromWebsite instance;
-
     private BufferedReader bufferedReader;
-
-    private final int titleSkipLength = Constants.FIRST_TITLE_TAG.get().length();
-    private int idSkipLength = Constants.FIRST_ID_TAG.get().length();
-    private int contentSkipLength = Constants.FIRST_CONTENT_TAG.get().length();
-
-    private boolean isReadFinished = false;
 
 
     static RSSReaderFromWebsite getInstance() {
@@ -29,113 +25,50 @@ public class RSSReaderFromWebsite {
 
     ArrayList<News> getRSS(String urlAddress) {
 
-        ArrayList<News> newses = null;
+        ArrayList<News> newses = new ArrayList<>();
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(new URL(urlAddress).openStream());
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            newses = readRSS();
+            readRSS(newses);
 
             inputStreamReader.close();
             bufferedReader.close();
 
-        } catch (IOException e) {
+        } catch (IOException | XMLStreamException e) {
             e.printStackTrace();
         }
 
         return newses;
     }
 
-    private ArrayList<News> readRSS() {
+    private void readRSS (ArrayList<News> newses) throws XMLStreamException {
 
-        ArrayList<News> newses = new ArrayList<>();
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(bufferedReader);
+        News news = null;
+        int identify = 0;
 
-        while (!isReadFinished) {
-            News news = readANews();
-            if (news == null) continue;
-            newses.add(news);
-        }
+        while (xmlStreamReader.hasNext()) {
+            xmlStreamReader.next();
 
-        return newses;
-    }
+            if (xmlStreamReader.getEventType() == xmlStreamReader.START_ELEMENT) {
 
-    private News readANews() {
+                if (xmlStreamReader.getLocalName().equalsIgnoreCase("item"))
+                    news = new News();
 
-        String title = getTitle();
-        String identify = getID();
-        String content = getContent();
-        if (title == null || content == null || identify == null) return null;
-        return new News(title, identify, content);
-    }
+                else if (news != null && xmlStreamReader.getLocalName().equalsIgnoreCase("title"))
+                    news.setTitle(xmlStreamReader.getElementText());
 
-    private String getTitle() {
+                else if (news != null && xmlStreamReader.getLocalName().equalsIgnoreCase("description"))
+                    news.setContent(xmlStreamReader.getElementText());
 
-        String rssLine;
+            } else if (xmlStreamReader.getEventType() == xmlStreamReader.END_ELEMENT) {
 
-        while (true) {
-
-            try {
-                if ((rssLine = bufferedReader.readLine()) == null)  {
-                    isReadFinished = true;
-                    return null;
+                if (news != null && xmlStreamReader.getLocalName().equalsIgnoreCase("item")) {
+                    news.setIdentify(++identify);
+                    newses.add(news);
                 }
-                if (!rssLine.contains(Constants.FIRST_TITLE_TAG.get())) continue;
-
-                return rssLine.substring(
-                        rssLine.indexOf(Constants.FIRST_TITLE_TAG.get()) + titleSkipLength,
-                        rssLine.indexOf(Constants.SECOND_TITLE_TAG.get()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
-    private String getID() {
-
-        String rssLine;
-
-        while (true) {
-
-            try {
-                if ((rssLine = bufferedReader.readLine()) == null) {
-                    isReadFinished = true;
-                    return null;
-                }
-                if (!rssLine.contains(Constants.FIRST_ID_TAG.get())) continue;
-
-                return rssLine.substring(
-                        rssLine.indexOf(Constants.FIRST_ID_TAG.get()) + idSkipLength,
-                        rssLine.indexOf(Constants.SECOND_ID_TAG.get()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
-    private String getContent() {
-
-        String rssLine;
-
-        while (true) {
-
-            try {
-                if ((rssLine = bufferedReader.readLine()) == null) {
-                    isReadFinished = true;
-                    return null;
-                }
-                if (!rssLine.contains(Constants.FIRST_CONTENT_TAG.get())) continue;
-
-                return rssLine.substring(
-                        rssLine.indexOf(Constants.FIRST_CONTENT_TAG.get()) + contentSkipLength,
-                        rssLine.indexOf(Constants.SECOND_CONTENT_TAG.get()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
             }
         }
     }

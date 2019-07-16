@@ -2,10 +2,11 @@ package rssSaver;
 
 public class News {
 
-    private String identify, title, content;
+    private int identify;
+    private String title, content;
     private int views = 0;
 
-    public String getIdentify() {
+    public int getIdentify() {
         return identify;
     }
 
@@ -25,10 +26,15 @@ public class News {
         return views;
     }
 
-    public News(String title, String identify, String content) {
-
+    public void setIdentify(int identify) {
         this.identify = identify;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setContent(String content) {
         this.content = content;
     }
 }

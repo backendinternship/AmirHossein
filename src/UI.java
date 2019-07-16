@@ -20,8 +20,8 @@ public class UI {
         }
 
         while(true) {
-            String identify = new Scanner(System.in).nextLine().trim();
-            if (identify.equals("finish")) break;
+            int identify = new Scanner(System.in).nextInt();
+            if (identify == -1 /* finish */) break;
             News news = findNews(identify);
 
             if (news == null)
@@ -38,10 +38,10 @@ public class UI {
         saveLastNewsesView();
     }
 
-    private static News findNews(String identify) {
+    private static News findNews(int identify) {
 
         for (News news : newses)
-            if (news.getIdentify().equals(identify)) return news;
+            if (news.getIdentify() == identify) return news;
 
         return null;
     }
