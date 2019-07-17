@@ -9,10 +9,12 @@ import java.util.ArrayList;
 
 public class RSSReaderFromWebsiteTest {
 
+    private String urlAddress = Constants.DIGITAL_TRENDS_WEBSITE.get();
+
     @Test
     public void testReadRSS() {
 
-        ArrayList<News> newses = RSSReaderFromWebsite.getInstance().getRSS(Constants.DIGITAL_TRENDS_WEBSITE.get());
+        ArrayList<News> newses = RSSReaderFromWebsite.getInstance().getRSS(urlAddress);
         boolean[] titleExistence = new boolean[newses.size()];
         boolean[] contentExistence = new boolean[newses.size()];
 

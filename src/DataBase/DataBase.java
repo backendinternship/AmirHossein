@@ -32,13 +32,8 @@ public class DataBase {
     public void resetDataBase(ArrayList<News> newses) {
 
         try {   //delete all newses
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from " + DIGITAL_TRENDS_TABLE_IN_MYSQL.get());
-            preparedStatement.execute();
-
-            preparedStatement = connection.prepareStatement("delete from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get());
-            preparedStatement.execute();
-            preparedStatement.close();
+            connection.prepareStatement("delete from " + DIGITAL_TRENDS_TABLE_IN_MYSQL.get()).execute();
+            connection.prepareStatement("delete from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get()).execute();
 
         } catch (SQLException e) {
             e.printStackTrace();

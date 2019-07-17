@@ -13,7 +13,7 @@ public class RSSReaderFromWebsite {
     private BufferedReader bufferedReader;
 
 
-    static RSSReaderFromWebsite getInstance() {
+    public static RSSReaderFromWebsite getInstance() {
         if (instance == null) instance = new RSSReaderFromWebsite();
         return instance;
     }
@@ -21,7 +21,7 @@ public class RSSReaderFromWebsite {
     private RSSReaderFromWebsite() {
     }
 
-    ArrayList<News> getRSS(String urlAddress) {
+    public ArrayList<News> getRSS(String urlAddress) {
 
         ArrayList<News> newses = new ArrayList<>();
         try {

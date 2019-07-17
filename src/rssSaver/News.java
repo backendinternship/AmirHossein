@@ -41,4 +41,13 @@ public class News {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public boolean equals(String title, String content) {
+
+        return this.title.length() == title.length() && this.content.length() == content.length();
+        /*
+            I assumed if (each news title length and content length in addition to equality of identifies) are same,
+            both of newses are equal
+         */
+    }
 }
