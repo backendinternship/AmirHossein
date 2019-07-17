@@ -1,4 +1,4 @@
-import Converters.DataBase;
+import DataBase.DataBase;
 import rssSaver.News;
 
 import java.util.Scanner;
