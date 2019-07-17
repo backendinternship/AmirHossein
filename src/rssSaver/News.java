@@ -18,10 +18,6 @@ public class News {
         return content;
     }
 
-    public void incrementView() {
-        views++;
-    }
-
     public int getViews() {
         return views;
     }

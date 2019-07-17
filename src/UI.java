@@ -9,7 +9,7 @@ public class UI {
 
         while(true) {
             int identify = new Scanner(System.in).nextInt();
-            if (identify == -1 /* finish */) break;
+            if (identify == -1 /* finish program */) break;
             News news = DataBase.getInstance().getNewsByID(identify);
 
             if (news == null)

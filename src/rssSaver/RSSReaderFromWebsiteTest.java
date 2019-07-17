@@ -4,7 +4,6 @@ import constants.Constants;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
 import java.util.ArrayList;
 
 public class RSSReaderFromWebsiteTest {
@@ -27,5 +26,7 @@ public class RSSReaderFromWebsiteTest {
             assertTrue(titleExistence[i]);
             assertTrue(contentExistence[i]);
         }
+
+        assertNotSame(0, newses.size());
     }
 }
