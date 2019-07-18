@@ -23,17 +23,11 @@ public class DataBaseTest {
     @Before
     public void getNewsesFromWebsite() throws SQLException {
 
-        try {
-            DataBase.connectToDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
+        DataBase.connectToDataBase();
 
         newses = RSSReaderFromWebsite.getInstance().getRSS(urlAddress);
         DataBase.getInstance().resetDataBase(newses);
-        connection = DriverManager.getConnection(
-                DATA_BASE_URL.get(), DATA_BASE_USER_NAME.get(), DATA_BASE_PASSWORD.get());
+        connection = DataBase.getInstance().getConnection();
     }
 
     @Test

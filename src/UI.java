@@ -6,14 +6,9 @@ import java.util.Scanner;
 
 public class UI {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        try {
-            DataBase.connectToDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
+        DataBase.connectToDataBase();
 
         while(true) {
             int identify = new Scanner(System.in).nextInt();

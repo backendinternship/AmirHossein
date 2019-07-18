@@ -16,6 +16,10 @@ public class DataBase {
         return instance;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     public static void connectToDataBase() throws SQLException {
         instance = new DataBase();
     }

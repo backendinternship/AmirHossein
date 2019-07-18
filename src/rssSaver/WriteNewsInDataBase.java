@@ -8,15 +8,9 @@ import java.sql.SQLException;
 
 public class WriteNewsInDataBase {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        try {
-            DataBase.connectToDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-
+        DataBase.connectToDataBase();
         DataBase.getInstance().resetDataBase(
                 RSSReaderFromWebsite.getInstance().getRSS(Constants.DIGITAL_TRENDS_WEBSITE.get()));
     }
