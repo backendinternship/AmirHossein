@@ -17,17 +17,23 @@ public class DataBaseTest {
     private Connection connection;
 
     private String urlAddress = DIGITAL_TRENDS_WEBSITE.get();
-    private String tableInMySQL = DIGITAL_TRENDS_TABLE_IN_MYSQL.get();
-    private String viewTableInMySQL = DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get();
+    private String tableInMySQL = DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get();
+    private String viewTableInMySQL = DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get();
 
     @Before
     public void getNewsesFromWebsite() throws SQLException {
 
+        try {
+            DataBase.connectToDataBase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
         newses = RSSReaderFromWebsite.getInstance().getRSS(urlAddress);
         DataBase.getInstance().resetDataBase(newses);
         connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost/" + DATA_BASE_NAME.get() +"?",
-                MYSQL_USER_NAME.get(), MYSQL_PASSWORD.get());
+                DATA_BASE_URL.get(), DATA_BASE_USER_NAME.get(), DATA_BASE_PASSWORD.get());
     }
 
     @Test

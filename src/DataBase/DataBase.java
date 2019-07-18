@@ -13,27 +13,24 @@ public class DataBase {
     private Connection connection;
 
     public static DataBase getInstance() {
-
-        if (instance == null) instance = new DataBase();
         return instance;
     }
 
-    private DataBase() {
+    public static void connectToDataBase() throws SQLException {
+        instance = new DataBase();
+    }
 
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/" + DATA_BASE_NAME.get() +"?",
-                    MYSQL_USER_NAME.get(), MYSQL_PASSWORD.get());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private DataBase() throws SQLException {
+
+        connection = DriverManager.getConnection(
+                DATA_BASE_URL.get(), DATA_BASE_USER_NAME.get(), DATA_BASE_PASSWORD.get());
     }
 
     public void resetDataBase(ArrayList<News> newses) {
 
         try {   //delete all newses
-            connection.prepareStatement("delete from " + DIGITAL_TRENDS_TABLE_IN_MYSQL.get()).execute();
-            connection.prepareStatement("delete from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get()).execute();
+            connection.prepareStatement("delete from " + DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get()).execute();
+            connection.prepareStatement("delete from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get()).execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +41,7 @@ public class DataBase {
 
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "insert into " + DIGITAL_TRENDS_TABLE_IN_MYSQL.get() + " values (?, ?, ?)");
+                        "insert into " + DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get() + " values (?, ?, ?)");
 
                 preparedStatement.setInt(1, news.getIdentify());
                 preparedStatement.setString(2, news.getTitle());
@@ -52,7 +49,7 @@ public class DataBase {
                 preparedStatement.execute();
 
                 preparedStatement = connection.prepareStatement(
-                        "insert into " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get() + " values (?, 0)");
+                        "insert into " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get() + " values (?, 0)");
                 preparedStatement.setInt(1, news.getIdentify());
                 preparedStatement.execute();
                 preparedStatement.close();
@@ -67,11 +64,11 @@ public class DataBase {
 
         try {
             PreparedStatement newsTable = connection.prepareStatement(
-                    "select * from " + DIGITAL_TRENDS_TABLE_IN_MYSQL.get() + " where id = " + identify);
+                    "select * from " + DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get() + " where id = " + identify);
             ResultSet newsTableResult = newsTable.executeQuery();
 
             PreparedStatement viewsTable = connection.prepareStatement(
-                    "select * from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get() + " where id = " + identify);
+                    "select * from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get() + " where id = " + identify);
             ResultSet viewsResult = viewsTable.executeQuery();
 
             if (newsTableResult.next() && viewsResult.next()) {
@@ -80,7 +77,7 @@ public class DataBase {
                 news.setIdentify(newsTableResult.getInt("id"));
                 news.setTitle(newsTableResult.getString("title"));
                 news.setContent(newsTableResult.getString("content"));
-                news.setViews(viewsResult.getInt("view"));
+                news.setViews(viewsResult.getInt("views"));
                 newsTable.close();
                 return news;
             } else
@@ -96,7 +93,7 @@ public class DataBase {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update " + DIGITAL_TRENDS_VIEWS_TABLE_IN_MYSQL.get() + " set view = view + 1 where id = " + identify);
+                    "update " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get() + " set views = views + 1 where id = " + identify);
             preparedStatement.executeUpdate();
             preparedStatement.close();
 

@@ -1,11 +1,19 @@
 import DataBase.DataBase;
 import rssSaver.News;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UI {
 
     public static void main(String[] args) {
+
+        try {
+            DataBase.connectToDataBase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
 
         while(true) {
             int identify = new Scanner(System.in).nextInt();
