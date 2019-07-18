@@ -1,15 +1,19 @@
 package DataBase;
 
-import static org.junit.Assert.*;
-
 import org.junit.*;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import rssSaver.News;
 import rssSaver.RSSReaderFromWebsite;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static constants.Constants.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DataBaseTest {
 
@@ -20,11 +24,14 @@ public class DataBaseTest {
     private String tableInMySQL = DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get();
     private String viewTableInMySQL = DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get();
 
+
     @Before
-    public void getNewsesFromWebsite() throws SQLException {
+    public void getNewsesFromWebsite() throws Exception {
+
+        RSSReaderFromWebsite rssReaderFromWebsite = Mockito.mock(RSSReaderFromWebsite.class);
+        Mockito.when(rssReaderFromWebsite.getRSS(Matchers.any(String.class))).thenReturn(MockitoMaker.getMockitoNewses());
 
         DataBase.connectToDataBase();
-
         newses = RSSReaderFromWebsite.getInstance().getRSS(urlAddress);
         DataBase.getInstance().resetDataBase(newses);
         connection = DataBase.getInstance().getConnection();
@@ -35,13 +42,11 @@ public class DataBaseTest {
 
         for (News news : newses) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from " + tableInMySQL + " where id = " + news.getIdentify());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = connection.prepareStatement(
+                    "select * from " + tableInMySQL + " where id = " + news.getIdentify()).executeQuery();
 
             while (resultSet.next())
                 assertTrue(news.equals(resultSet.getString("title"), resultSet.getString("content")));
-            preparedStatement.close();
         }
     }
 

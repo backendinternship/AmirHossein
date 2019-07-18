@@ -67,13 +67,11 @@ public class DataBase {
     public News getNewsByID(int identify) {
 
         try {
-            PreparedStatement newsTable = connection.prepareStatement(
-                    "select * from " + DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get() + " where id = " + identify);
-            ResultSet newsTableResult = newsTable.executeQuery();
+            ResultSet newsTableResult = connection.prepareStatement(
+                    "select * from " + DIGITAL_TRENDS_TABLE_IN_DATA_BASE.get() + " where id = " + identify).executeQuery();
 
-            PreparedStatement viewsTable = connection.prepareStatement(
-                    "select * from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get() + " where id = " + identify);
-            ResultSet viewsResult = viewsTable.executeQuery();
+            ResultSet viewsResult = connection.prepareStatement(
+                    "select * from " + DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE.get() + " where id = " + identify).executeQuery();
 
             if (newsTableResult.next() && viewsResult.next()) {
 
@@ -82,7 +80,6 @@ public class DataBase {
                 news.setTitle(newsTableResult.getString("title"));
                 news.setContent(newsTableResult.getString("content"));
                 news.setViews(viewsResult.getInt("views"));
-                newsTable.close();
                 return news;
             } else
                 return null;

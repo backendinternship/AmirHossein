@@ -8,7 +8,9 @@ public enum Constants {
 
     DIGITAL_TRENDS_WEBSITE("https://www.digitaltrends.com/feed/"),
     DIGITAL_TRENDS_TABLE_IN_DATA_BASE("digitalTrends"),
-    DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE("digitalTrendsViews");
+    DIGITAL_TRENDS_VIEWS_TABLE_IN_DATA_BASE("digitalTrendsViews"),
+
+    RRS_MOCKITO_JSON_ADDRESS("mockitoFiles/rssMockito.json");
 
     private String address;
 
