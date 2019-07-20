@@ -23,6 +23,6 @@ public class MockitoMaker {
         //make once mockito for ever
 
         ArrayList<News> newses = RSSReaderFromWebsite.getInstance().getRSS(Constants.DIGITAL_TRENDS_WEBSITE.get());
-        JsonConverter.writeRSSToJson(Constants.RRS_MOCKITO_JSON_ADDRESS.get(), new WebsiteNewses(newses));
+        JsonConverter.writeToJson(Constants.RRS_MOCKITO_JSON_ADDRESS.get(), new WebsiteNewses(newses));
     }
 }

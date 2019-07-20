@@ -8,9 +8,9 @@ import java.io.*;
 
 public class JsonConverter {
 
-    public static void writeRSSToJson(String jsonAddress, WebsiteNewses websiteNewses) {
+    public static void writeToJson(String jsonAddress, Object object) {
 
-        String rss = new GsonBuilder().setPrettyPrinting().create().toJson(websiteNewses);
+        String rss = new GsonBuilder().setPrettyPrinting().create().toJson(object);
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(jsonAddress));

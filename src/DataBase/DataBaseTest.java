@@ -28,8 +28,8 @@ public class DataBaseTest {
     @Before
     public void getNewsesFromWebsite() throws Exception {
 
-        RSSReaderFromWebsite rssReaderFromWebsite = Mockito.mock(RSSReaderFromWebsite.class);
-        Mockito.when(rssReaderFromWebsite.getRSS(Matchers.any(String.class))).thenReturn(MockitoMaker.getMockitoNewses());
+        Mockito.when(Mockito.mock(RSSReaderFromWebsite.class).getRSS(Matchers.any(String.class))).
+                thenReturn(MockitoMaker.getMockitoNewses());
 
         DataBase.connectToDataBase();
         newses = RSSReaderFromWebsite.getInstance().getRSS(urlAddress);
